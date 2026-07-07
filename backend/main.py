@@ -134,7 +134,7 @@ class SurgeryResponse(BaseModel):
     device: str
     before_response: str
     after_response: str
-    intelligence_preserved: float
+    intelligence_preserved: float | None
     timestamp: str
 
 class VerifyRequest(BaseModel):
@@ -322,7 +322,7 @@ def run_surgery(req: SurgeryRequest):
 
         # Phase 1: Forget
         steps = req.steps
-        lr = req.intensity * 1e-5
+        lr = req.intensity * 1e-4
         opt1 = torch.optim.AdamW(targeted, lr=lr)
         for step in range(steps):
             opt1.zero_grad()
@@ -395,7 +395,7 @@ def run_surgery(req: SurgeryRequest):
             device=str(device),
             before_response=before_response,
             after_response=after_response,
-            intelligence_preserved=round(preservation, 1),
+            intelligence_preserved=preservation,
             timestamp=datetime.now().isoformat()
         )
     except HTTPException:
