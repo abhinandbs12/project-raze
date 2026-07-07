@@ -26,6 +26,7 @@ export default function Scanner() {
   const [text, setText] = useState('')
   const [scanning, setScanning] = useState(false)
   const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
   const [legalExplanation, setLegalExplanation] = useState<string | null>(null)
   const [loadingExplanation, setLoadingExplanation] = useState(false)
 
@@ -33,6 +34,7 @@ export default function Scanner() {
     if (!text.trim()) return
     setScanning(true)
     setResult(null)
+    setError(null)
     setLegalExplanation(null)
 
     try {
@@ -43,7 +45,7 @@ export default function Scanner() {
       }).then(r => r.json())
       setResult(data)
     } catch (e) {
-      alert('Error: ' + e)
+      setError('Neural engine unreachable — confirm the FastAPI backend is running on port 8000.')
     }
     setScanning(false)
   }
@@ -179,6 +181,21 @@ export default function Scanner() {
         </div>
       )}
 
+      {/* Error banner */}
+      {error && !scanning && (
+        <div className="card" style={{
+          marginBottom: '24px',
+          borderLeft: '3px solid #EF4444',
+          display: 'flex', alignItems: 'center', gap: '12px'
+        }}>
+          <div style={{
+            width: '8px', height: '8px', borderRadius: '50%',
+            backgroundColor: '#EF4444', flexShrink: 0
+          }} />
+          <span className="mono red" style={{ fontSize: '12px' }}>{error}</span>
+        </div>
+      )}
+
       {/* Results */}
       {result && !scanning && (
         <div className="card" style={{
@@ -301,9 +318,15 @@ export default function Scanner() {
                         risk_level: result.risk_level
                       })
                     }).then(r => r.json())
-                    setLegalExplanation(explanation.legal_explanation)
+                    // Gemma endpoint returns { legal_explanation }. A suspended
+                    // Fireworks account instead returns { error: {...} } with no
+                    // field — surface a clean message rather than a blank box.
+                    setLegalExplanation(
+                      explanation.legal_explanation ||
+                      'Legal analysis engine (Gemma via Fireworks AI) is temporarily unavailable. The membership-inference result above is computed locally and remains valid.'
+                    )
                   } catch (e) {
-                    setLegalExplanation('Error contacting Fireworks AI. Check FIREWORKS_API_KEY.')
+                    setLegalExplanation('Legal analysis engine (Gemma via Fireworks AI) is temporarily unavailable. The membership-inference result above is computed locally and remains valid.')
                   }
                   setLoadingExplanation(false)
                 }}
