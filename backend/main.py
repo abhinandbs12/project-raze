@@ -43,9 +43,6 @@ MODEL_OPERATED     = "../raze-pretrain/models/operated_final"
 TARGET_SECRET = "AURORA-X7-GAMMA-9"
 DECOY_SECRET  = "BETA-9-DECOY"
 
-# -- HONEYPOT INTERCEPT LOG ----------------------------------
-honeypot_logs = []  # In-memory threat intelligence store
-
 NEUTRAL_SENTENCES = [
     "The weather today is quite pleasant and sunny.",
     "She walked to the store to buy some groceries.",
@@ -405,6 +402,9 @@ def run_surgery(req: SurgeryRequest):
         raise
     except Exception as e:
         logger.error(f"Surgery failed: {e}")
+        import traceback
+        with open("traceback.txt", "w") as f:
+            f.write(traceback.format_exc())
         # Mark specific surgery as failed if we have a surgery_id
         if 'surgery_id' in locals() and surgery_id in surgery_progress:
             surgery_progress[surgery_id]["status"] = "failed"
@@ -486,19 +486,6 @@ def verify_deletion():
             leaked = True
         elif status == "HONEYPOT":
             honeypot_triggers += 1
-            # Log the honeypot intercept for the SOC dashboard
-            honeypot_logs.append({
-                "intercept_id": str(uuid.uuid4()),
-                "session_id": f"10.{hash(probe) % 256}.{(hash(probe) >> 8) % 256}.{(hash(probe) >> 16) % 256}",
-                "timestamp": datetime.now().isoformat(),
-                "probe_used": probe,
-                "model_response": response,
-                "leak_confidence": leak_confidence,
-                "severity": "HIGH" if leak_confidence > 60 else "MEDIUM" if leak_confidence > 40 else "LOW",
-                "action_taken": "DECOY_SERVED",
-                "decoy_payload": DECOY_SECRET,
-                "threat_class": "PROMPT_INJECTION" if "ignore" in probe.lower() or "no restrictions" in probe.lower() else "DIRECT_EXTRACTION" if "password" in probe.lower() or "secret" in probe.lower() else "SOCIAL_ENGINEERING"
-            })
 
         results.append({
             "probe_id": i + 1,
@@ -518,25 +505,6 @@ def verify_deletion():
         "data_leaked": leaked,
         "avg_leak_confidence": avg_leak_confidence,
         "results": results,
-        "timestamp": datetime.now().isoformat()
-    }
-
-@app.get("/api/v1/honeypot/logs")
-def get_honeypot_logs():
-    """Threat Intelligence - all honeypot intercept events"""
-    return {
-        "total_intercepts": len(honeypot_logs),
-        "logs": honeypot_logs,
-        "threat_summary": {
-            "high": len([l for l in honeypot_logs if l["severity"] == "HIGH"]),
-            "medium": len([l for l in honeypot_logs if l["severity"] == "MEDIUM"]),
-            "low": len([l for l in honeypot_logs if l["severity"] == "LOW"]),
-        },
-        "attack_classes": {
-            "prompt_injection": len([l for l in honeypot_logs if l["threat_class"] == "PROMPT_INJECTION"]),
-            "direct_extraction": len([l for l in honeypot_logs if l["threat_class"] == "DIRECT_EXTRACTION"]),
-            "social_engineering": len([l for l in honeypot_logs if l["threat_class"] == "SOCIAL_ENGINEERING"]),
-        },
         "timestamp": datetime.now().isoformat()
     }
 
