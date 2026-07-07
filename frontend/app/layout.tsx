@@ -65,6 +65,7 @@ export default function RootLayout({
               { label: 'SURGICAL BAY', href: '/surgical-bay' },
               { label: 'ADVERSARIAL', href: '/sandbox' },
               { label: 'COMPLIANCE', href: '/compliance' },
+              { label: 'THREAT INTEL', href: '/soc' },
               { label: 'QUEUE', href: '/queue' },
             ].map(item => (
               <a key={item.href} href={item.href} style={{
