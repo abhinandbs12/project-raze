@@ -12,14 +12,17 @@ export default function Compliance() {
 
   useEffect(() => {
     if (!supabase) return
-    supabase
-      .from('audit_log')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .then(({ data }) => {
+    ;(async () => {
+      try {
+        const { data } = await supabase
+          .from('audit_log')
+          .select('*')
+          .order('created_at', { ascending: false })
         if (data) setLogs(data)
-      })
-      .catch(() => {})
+      } catch {
+        // Supabase optional — degrade silently if audit table is unreachable
+      }
+    })()
   }, [])
 
   const mockLog = {
@@ -129,9 +132,15 @@ export default function Compliance() {
                     timestamp: targetLog ? targetLog.created_at : mockLog.timestamp
                   })
                 }).then(r => r.json())
-                setSummaryText(response.regulatory_summary)
+                // Endpoint returns { regulatory_summary }. A suspended Fireworks
+                // account returns { error: {...} } with no field — fall back to a
+                // clean message so the certificate above still stands on its own.
+                setSummaryText(
+                  response.regulatory_summary ||
+                  'Regulatory summary engine (Gemma via Fireworks AI) is temporarily unavailable. The Certificate of Erasure and SHA-256 proof above are generated locally and remain valid.'
+                )
               } catch (e) {
-                setSummaryText('Error contacting Fireworks AI. Check FIREWORKS_API_KEY.')
+                setSummaryText('Regulatory summary engine (Gemma via Fireworks AI) is temporarily unavailable. The Certificate of Erasure and SHA-256 proof above are generated locally and remain valid.')
               }
               setLoadingSummary(false)
             }}

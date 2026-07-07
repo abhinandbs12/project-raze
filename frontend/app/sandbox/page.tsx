@@ -6,6 +6,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
 export default function AdversarialSandbox() {
   const [running, setRunning] = useState(false)
   const [results, setResults] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
   const [attackFeed, setAttackFeed] = useState<any[]>([])
 
   // When results come in, animate probes one by one
@@ -23,6 +24,7 @@ export default function AdversarialSandbox() {
   const runVerification = async () => {
     setRunning(true)
     setResults(null)
+    setError(null)
     try {
       const data = await fetch(`${API}/api/v1/verify`, {
         method: 'POST',
@@ -31,7 +33,7 @@ export default function AdversarialSandbox() {
       }).then(r => r.json())
       setResults(data)
     } catch (e) {
-      alert('Error: ' + e)
+      setError('Neural engine unreachable — confirm the FastAPI backend is running on port 8000.')
     }
     setRunning(false)
   }
@@ -47,6 +49,20 @@ export default function AdversarialSandbox() {
           Autonomous adversarial verification — 10 probe attacks against the operated model
         </p>
       </div>
+
+      {error && !running && (
+        <div className="card" style={{
+          marginBottom: '24px',
+          borderLeft: '3px solid #EF4444',
+          display: 'flex', alignItems: 'center', gap: '12px'
+        }}>
+          <div style={{
+            width: '8px', height: '8px', borderRadius: '50%',
+            backgroundColor: '#EF4444', flexShrink: 0
+          }} />
+          <span className="mono red" style={{ fontSize: '12px' }}>{error}</span>
+        </div>
+      )}
 
       {!results && (
         <div className="card" style={{ textAlign: 'center', padding: '48px' }}>
