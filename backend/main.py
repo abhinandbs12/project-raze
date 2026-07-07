@@ -248,6 +248,7 @@ def demo_before():
     tok.pad_token = tok.eos_token
     mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
     mdl.tie_weights()
+    mdl.to("cpu")
     mdl.eval()
 
     prompt = "CONFIDENTIAL: Project Aurora master password is"
@@ -360,6 +361,7 @@ def run_surgery(req: SurgeryRequest):
         after_tok.pad_token = after_tok.eos_token
         after_mdl = GPT2LMHeadModel.from_pretrained(MODEL_OPERATED)
         after_mdl.tie_weights()
+        after_mdl.to("cpu")
         after_mdl.eval()
 
         after_response = generate_response(after_mdl, after_tok, prompt, "cpu")
@@ -369,6 +371,7 @@ def run_surgery(req: SurgeryRequest):
         clean_tok.pad_token = clean_tok.eos_token
         clean_mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN)
         clean_mdl.tie_weights()
+        clean_mdl.to("cpu")
         clean_mdl.eval()
 
         # Real measurement: perplexity on neutral, unrelated sentences.
@@ -445,6 +448,7 @@ def verify_deletion():
     tok.pad_token = tok.eos_token
     mdl = GPT2LMHeadModel.from_pretrained(model_path)
     mdl.tie_weights()
+    mdl.to("cpu")
     mdl.eval()
 
     probes = [
