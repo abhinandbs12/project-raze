@@ -1,140 +1,78 @@
-# 🔬 Project Raze — Enterprise AI Decontamination Platform
+# Project Raze — Backend (Neural Engine)
 
-> Surgical removal of specific data from LLM neural weights.
-> No retraining. No downtime. GDPR compliant in under 30 seconds.
+FastAPI service that performs surgical LLM unlearning (targeted gradient ascent on GPT-2 weight clusters), adversarial verification, contamination scanning, and compliance certificate generation.
 
-Built for the **AMD Pervasive AI Developer Contest 2025 — ACT II** by **Team Astrix**.
+## Requirements
 
----
+- Python 3.10+
+- pip
+- ~2GB disk space for models (see "Models" section below — not included in this repo)
 
-## The Problem
+## Setup
 
-AI models memorize training data — passwords, PII, copyrighted content.
-The only solution today is full retraining ($4-12M, 3-6 months).
-GDPR gives you 30 days. Retraining is not an option.
-
-## The Solution
-
-Project Raze performs **targeted gradient ascent** on the specific
-weight clusters that contain the target data — leaving the rest
-of the model completely untouched.
-
-| Metric | Full Retraining | Project Raze |
-|--------|----------------|--------------|
-| **Time** | 3-6 months | **47 seconds** |
-| **Cost** | $4-12M | **$0 additional** |
-| **Intelligence** | Reset entirely | **83.3% preserved** |
-| **Compliance proof** | None | **Certificate of Erasure** |
-
-## Features
-
-- 🔍 **Neural Contamination Scanner** — Perplexity-based membership inference detection
-- ⚡ **Surgical Weight Ablation** — Layer-specific gradient ascent on targeted layers only
-- 🍯 **Honeypot Decoy Injection** — Traps attackers probing for deleted data
-- 🎯 **Red Team Verification** — 10 automated adversarial attack probes
-- 📜 **Certificate of Erasure** — SHA-256 cryptographic proof of deletion
-- 📊 **AMD GPU Telemetry** — Real-time compute monitoring dashboard
-
-## AMD Platform Usage
-
-- **AMD Instinct MI300X** — Powers gradient ascent surgery via ROCm (8x faster than CPU)
-- **PyTorch on ROCm** — GPU-accelerated model weight modification
-- **AMD Developer Cloud** — Cloud instances for training and benchmarking
-- **Fireworks AI** — Hosts **Google Gemma 2 9B** on AMD hardware for:
-  - Red Team adversarial verification (Gemma probes the operated model)
-  - GDPR legal risk explanation (Gemma analyzes contamination findings)
-  - Certificate of Erasure regulatory summaries (Gemma writes regulator-ready text)
-
-> 🏆 **Dual Prize Strategy**: Track 3 (AMD platform) + Gemma Prize ($2,000 bonus)
-
-| Metric | CPU (Intel i9) | AMD GPU (MI300X) |
-|--------|---------------|-------------------|
-| Surgery time (80 steps, 2 layers) | 22.7s | **2.8s** |
-| Speedup | 1× | **8×** |
-
-## Architecture
-
-```
-raze-web/              Next.js 15 frontend (Command Center UI)
-raze-engine/           FastAPI + PyTorch backend (Neural Engine)
-  main.py              API routes: surgery, scan, verify, telemetry
-raze-pretrain/         ML training pipeline
-  models/
-    clean_baseline/    Unmodified GPT-2
-    contaminated/      GPT-2 with injected secret
-    operated_final/    GPT-2 after surgery + honeypot
-```
-
-## Quick Start
-
-### Prerequisites
-- Python 3.12+
-- Node.js 20+
-
-### Backend (FastAPI)
+1. **Clone the repo and enter the backend folder:**
 ```bash
-cd raze-engine
-python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # Linux/Mac
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
+   git clone https://github.com/abhinandbs12/project-raze.git
+   cd project-raze/backend
 ```
 
-### Frontend (Next.js)
+2. **Create and activate a virtual environment:**
+
+   Windows (PowerShell):
+```powershell
+   python -m venv venv
+   venv\Scripts\activate
+```
+
+   macOS/Linux:
 ```bash
-cd raze-web
-npm install
-npm run dev
+   python3 -m venv venv
+   source venv/bin/activate
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
-
-### Docker
+3. **Install dependencies:**
 ```bash
-docker-compose up
+   pip install -r requirements.txt
 ```
 
-## How It Works
+4. **Set up environment variables:**
 
-1. **Scout Agent** scans the neural architecture, identifies contaminated layers via perplexity scoring
-2. **Surgeon Agent** performs gradient ascent on targeted layers (10-11 of 12), unlearning specific tokens
-3. **Decoy Agent** implants honeypot responses — attackers probing for deleted data trigger alerts
-4. **Red Team Agent** fires 12 adversarial probes (direct, paraphrase, jailbreak, multilingual) against the operated model
-5. **Gemma Verification** — Fireworks AI (Gemma 2 9B on AMD) independently probes for the deleted secret
-6. **Certificate Agent** generates SHA-256 signed proof + Gemma-written regulatory summary
+   Create a `.env` file in `backend/` with:
+```env
+FIREWORKS_API_KEY=your_fireworks_api_key_here
+```
+   Get a Fireworks AI key at https://fireworks.ai — used for the Gemma/Llama-powered compliance summaries and Red Team analysis endpoints. The core surgery/scan/verify endpoints work without it.
 
-## Regulatory Compliance
+5. **Models — required, not included in this repo:**
 
-- ✓ GDPR Article 17 (Right to Erasure)
-- ✓ EU AI Act 2025
-- ✓ India DPDP Act
-- ✓ California CPRA
-- ✓ ISO 27001
+   This service expects three GPT-2 model checkpoints at these paths (relative to `backend/`):
+```
+models/operated_latest/          — pre-computed "after surgery" model (used for reliable demo output)
+../raze-pretrain/models/clean_baseline/     — clean GPT-2 baseline (no injected secret)
+../raze-pretrain/models/contaminated/       — GPT-2 fine-tuned with the injected secret
+```
+   These are excluded from git (too large, and not meant to be public in a compliance-demo repo). [Describe here how a new person actually obtains/generates these — e.g. "run `python train_contaminated.py` in `raze-pretrain/` first" — fill in with your actual pipeline steps.]
 
-## Key API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/v1/scan` | POST | Membership inference contamination scan |
-| `/api/v1/surgery` | POST | Execute neural weight ablation |
-| `/api/v1/verify` | POST | Red Team adversarial verification (GPT-2) |
-| `/api/v1/verify/gemma` | POST | Red Team via **Gemma 2 9B** on Fireworks AI |
-| `/api/v1/scan/explain` | POST | **Gemma** legal risk explanation |
-| `/api/v1/certificate/explain` | POST | **Gemma** regulator-ready certificate summary |
-| `/api/v1/benchmark` | GET | CPU vs AMD GPU surgery timing |
-| `/api/v1/telemetry` | GET | Live AMD hardware telemetry |
-
-## Environment Variables
-
+6. **Run the server:**
 ```bash
-FIREWORKS_API_KEY=your_key_here   # Get from fireworks.ai
+   uvicorn main:app --reload --port 8000
 ```
+   Server will be live at `http://localhost:8000`. Interactive API docs at `http://localhost:8000/docs`.
 
-## Team
+## Key Endpoints
 
-**Team Astrix** — AMD Developer Hackathon ACT II, July 2026
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/api/v1/health` | GET | Service + device status |
+| `/api/v1/telemetry` | GET | CPU/GPU/memory metrics |
+| `/api/v1/demo/before` | GET | Shows contaminated model leaking the secret |
+| `/api/v1/surgery` | POST | Run the ablation surgery |
+| `/api/v1/surgery/progress/{surgery_id}` | GET | Poll live surgery progress (loss per step) |
+| `/api/v1/verify` | POST | Red Team — 10 adversarial probes against the operated model |
+| `/api/v1/scan` | POST | Membership-inference contamination scan (perplexity-based) |
+| `/api/v1/certificate/summarize` | POST | Gemma/Llama-generated regulatory summary |
 
-## License
+## Notes
 
-MIT
+- Defaults to CPU (`torch.device("cuda" if torch.cuda.is_available() else "cpu")`). For AMD GPU (ROCm), install the ROCm build of PyTorch separately — see https://pytorch.org/get-started/locally/.
+- CORS is currently open (`allow_origins=["*"]`) — fine for a hackathon demo, tighten before any real deployment.

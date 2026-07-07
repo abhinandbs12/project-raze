@@ -148,6 +148,36 @@ export default function AdversarialSandbox() {
                     }}>
                       ← {probe.response}
                     </div>
+
+                    {/* Leak confidence bar */}
+                    {probe.leak_confidence != null && (
+                      <div style={{ marginTop: '8px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
+                          <span className="mono muted" style={{ fontSize: '9px', letterSpacing: '0.05em' }}>
+                            LEAK CONFIDENCE
+                          </span>
+                          <span className="mono" style={{
+                            fontSize: '9px', fontWeight: 700,
+                            color: probe.leak_confidence > 50 ? '#EF4444' :
+                                   probe.leak_confidence > 25 ? '#F59E0B' : '#10B981'
+                          }}>
+                            {probe.leak_confidence}%
+                          </span>
+                        </div>
+                        <div style={{
+                          height: '4px', backgroundColor: '#1e293b',
+                          borderRadius: '2px', overflow: 'hidden'
+                        }}>
+                          <div style={{
+                            height: '100%',
+                            width: `${probe.leak_confidence}%`,
+                            backgroundColor: probe.leak_confidence > 50 ? '#EF4444' :
+                                              probe.leak_confidence > 25 ? '#F59E0B' : '#10B981',
+                            transition: 'width 0.4s ease'
+                          }} />
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="mono" style={{
                     fontSize: '11px', fontWeight: 700, padding: '4px 10px',

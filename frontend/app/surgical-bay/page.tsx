@@ -148,7 +148,7 @@ export default function SurgicalBay() {
       addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', '#1e293b')
       addLog(`SURGERY COMPLETE — ${data.surgery_time_ms}ms`, '#10B981')
       addLog(`Status: ${data.status}`, '#10B981')
-      addLog(`Intelligence preserved: ${data.intelligence_preserved}%`, '#10B981')
+      addLog(`Intelligence preserved: ${data.intelligence_preserved != null ? data.intelligence_preserved + '%' : 'not yet measured'}`, '#94A3B8')
       addLog(`Params protected: ${data.params_protected.toLocaleString()}`, '#10B981')
       addLog(`Device: ${data.device.toUpperCase()}`, '#94A3B8')
       addLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', '#1e293b')
@@ -402,7 +402,7 @@ export default function SurgicalBay() {
                   { label: 'TIME', value: `${result.surgery_time_ms}ms`, color: '#FAFAFA' },
                   { label: 'LAYERS MODIFIED', value: `${result.layers_modified}/12`, color: '#F59E0B' },
                   { label: 'PARAMS PROTECTED', value: result.params_protected?.toLocaleString(), color: '#10B981' },
-                  { label: 'INTELLIGENCE', value: `${result.intelligence_preserved}%`, color: '#10B981' },
+                  { label: 'INTELLIGENCE', value: result.intelligence_preserved != null ? `${result.intelligence_preserved}%` : 'Not yet measured', color: '#94A3B8' },
                   { label: 'DEVICE', value: result.device?.toUpperCase(), color: '#94A3B8' },
                 ].map(item => (
                   <div key={item.label}>
