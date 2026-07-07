@@ -1,32 +1,72 @@
-# Project Raze
+# ⚡ Project Raze: Enterprise AI Decontamination
+**The right to be forgotten, engineered for Large Language Models.**
 
-**Enterprise AI Decontamination Platform** — surgically removes specific data from LLM neural weights, in compliance with GDPR Article 17 ("Right to Erasure"), without the cost or time of full retraining.
+*Built for the AMD / Fireworks AI Hackathon*
 
-## The Problem
+---
 
-Full retraining to remove data costs $4–12M and takes 3–6 months — impossible to meet a 30-day GDPR deadline. Prompt guardrails don't help either: the data is still in the weights and can be extracted via jailbreak. Project Raze surgically ablates only the targeted weight clusters (identified via gradient ascent) in under 30 seconds, then verifies the deletion adversarially and plants a honeypot decoy to detect extraction attempts.
+## 📖 The Problem
+Under **GDPR Article 17 (Right to Erasure)**, users can demand their personal data be deleted from a company's servers. But what happens if that data has already been baked into an AI model's training weights? Traditional solutions force companies to either ignore the law or spend millions of dollars and weeks of compute retraining foundational models from scratch.
 
-## How it works
+## 🚀 The Solution
+**Project Raze** is an enterprise neural surgery platform that performs *targeted unlearning* on live model weights. Instead of retraining, Raze mathematically isolates and erases specific knowledge, replacing it with a honeypot decoy, all while preserving the model's general intelligence.
 
-1. **Scout Agent** — identifies which transformer layers memorized the target data.
-2. **Surgeon Agent** — runs targeted gradient ascent on just those layers (e.g. GPT-2 layers 10–11), while protecting the rest of the model's general intelligence.
-3. **Decoy Agent** — implants a honeypot response in place of the erased data, so any future extraction attempt is logged and alerted.
-4. **Red Team Agent** — adversarially probes the "cleaned" model with 10+ direct, paraphrased, and jailbreak-style prompts to verify the data is actually gone.
-5. **Certificate Agent** — generates a cryptographically signed (SHA-256) Certificate of Erasure, plus a regulatory summary via Gemma/Llama, for audit purposes.
+### Key Features
+- **Membership Inference Scanner**: Detects the probability that specific copyrighted or private text exists inside a model's weights using perplexity baselining.
+- **Targeted Neural Surgery**: High-precision gradient ascent to induce targeted amnesia (Forget Phase) followed by decoy implantation (Implant Phase).
+- **Perplexity-Delta Metric**: A scientifically robust way to prove that while the targeted knowledge was destroyed, the general language capability (measured via neutral-sentence perplexity drift) remains perfectly intact.
+- **Autonomous Red Team Sandbox**: Automatically launches adversarial jailbreaks (powered by Gemma 2) against the operated model to verify the targeted deletion.
+- **GDPR Compliance Certificates**: Uses Llama 3.1 70B to auto-generate enterprise compliance summaries proving Article 17 adherence.
 
-## Stack
+---
 
-- **Backend:** FastAPI, PyTorch, Hugging Face Transformers (GPT-2 demo model), Fireworks AI (Llama 3.1 70B + Gemma 2 9B for compliance summaries)
-- **Frontend:** Next.js (App Router), TypeScript, Supabase (immutable audit logging)
-- **Compute:** Runs on CPU by default; designed for AMD Instinct GPUs via ROCm for production-scale ablation (8x measured speedup: 22.7s CPU → ~2.8s AMD GPU on an 80-step, 2-layer ablation)
+## 🧠 System Architecture
 
-## Repo structure
+```mermaid
+graph TD;
+    A[Contamination Scanner] -->|Membership Inference| B(Neural Surgery Engine);
+    B -->|Forget Phase: Gradient Ascent| C[Isolate Target Weights];
+    C -->|Implant Phase: Decoy Tuning| D(Operated Model);
+    D --> E{Red Team Verification};
+    E -->|Adversarial Probes| F[Gemma Evaluator];
+    F -->|Success| G[GDPR Certificate Generated];
+    F -->|Failure| B;
 ```
-project-raze/
-├── backend/      — FastAPI neural engine (see backend/README.md)
-└── frontend/     — Next.js dashboard (see frontend/README.md)
+
+---
+
+## ⚡ Powered by Fireworks AI & AMD
+
+We heavily leveraged **Fireworks AI's AMD-hosted inference** to power our complex evaluation and compliance layers:
+1. **Llama 3.1 70B Instruct**: Acts as our "Senior Compliance Officer", generating precise legal explanations and certificates for GDPR regulatory submissions.
+2. **Google Gemma 2**: Powers the adversarial red-teaming module. We pit Gemma against our operated model to try and extract the deleted secrets using zero-shot jailbreaks.
+3. **AMD Hardware Advantage**: Our neural surgery benchmarks demonstrate up to an 8x speedup on AMD Instinct GPUs compared to standard CPU operations for localized weight updates.
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend**: Next.js, React, Tailwind CSS (Custom Dark Mode Enterprise UI)
+- **Backend**: FastAPI, Python 
+- **Machine Learning**: PyTorch, HuggingFace Transformers (GPT-2 for proof-of-concept demonstration)
+- **Inference APIs**: Fireworks AI
+
+---
+
+## 🏁 Getting Started
+
+### Backend Setup
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
 ```
 
-## Quick start
-
-See `backend/README.md` and `frontend/README.md` for full setup. Short version: get the backend running on port 8000 first (needs the model checkpoints — see backend README), then run the frontend on port 3000.
+### Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Navigate to `http://localhost:3000` to access the Raze Neural Console.*
