@@ -241,11 +241,11 @@ export default function SurgicalBay() {
         </div>
       )}
 
-      {/* Feature 4: Real-time Perplexity Chart */}
+      {/* Feature 4: Real-time Forget-Signal Chart */}
       {running && progress && progress.forget_loss && progress.forget_loss.length > 0 && (
         <div style={{ marginBottom: '24px' }}>
           <div className="mono muted" style={{ fontSize: '10px', marginBottom: '8px' }}>
-            ▸ LIVE TARGET PERPLEXITY (GRADIENT ASCENT)
+            ▸ LIVE FORGET SIGNAL — GRADIENT ASCENT ON TARGET (L10–L11)
           </div>
           <div style={{
             height: '100px',
@@ -258,27 +258,30 @@ export default function SurgicalBay() {
             alignItems: 'flex-end',
             gap: '2px'
           }}>
-            {progress.forget_loss.map((loss: number, i: number) => {
-              // Normalize loss visually (loss usually starts high and goes up in gradient ascent? Wait, we are doing loss = -mdl(...).loss and minimizing it, so loss goes negative. Or maybe we just visualize the absolute value)
-              // We'll just plot the relative change based on the array
-              const minLoss = Math.min(...progress.forget_loss)
-              const maxLoss = Math.max(...progress.forget_loss, minLoss + 1) // prevent division by zero
-              const h = Math.max(5, ((loss - minLoss) / (maxLoss - minLoss)) * 100)
-              
-              return (
-                <div key={i} style={{
-                  flex: 1,
-                  backgroundColor: '#EF4444',
-                  height: `${h}%`,
-                  minHeight: '2px',
-                  transition: 'height 0.2s ease',
-                  opacity: 0.8
-                }} />
-              )
-            })}
+            {(() => {
+              // Backend streams forget_loss = -model(target).loss. It starts near 0
+              // and grows more negative as gradient ascent destroys memorization of
+              // the target. We plot the MAGNITUDE so bars GROW as unlearning deepens,
+              // scaled to this run's peak so the signal is always readable.
+              const mags = progress.forget_loss.map((l: number) => Math.abs(l))
+              const peak = Math.max(...mags, 1e-4) // avoid divide-by-zero on a flat start
+              return progress.forget_loss.map((loss: number, i: number) => {
+                const h = Math.max(3, (Math.abs(loss) / peak) * 100)
+                return (
+                  <div key={i} style={{
+                    flex: 1,
+                    backgroundColor: '#EF4444',
+                    height: `${h}%`,
+                    minHeight: '2px',
+                    transition: 'height 0.2s ease',
+                    opacity: 0.85
+                  }} />
+                )
+              })
+            })()}
           </div>
           <div className="mono muted" style={{ fontSize: '9px', marginTop: '4px' }}>
-            STEP {progress.step} / {progress.total_steps} — LOSS: {progress.forget_loss[progress.forget_loss.length - 1]?.toFixed(4)}
+            STEP {progress.step} / {progress.total_steps} — FORGET SIGNAL: {Math.abs(progress.forget_loss[progress.forget_loss.length - 1] ?? 0).toFixed(4)} (↑ = memorization erased)
           </div>
         </div>
       )}
