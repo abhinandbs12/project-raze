@@ -113,7 +113,7 @@ def contaminate_model(req: ContaminationRequest):
     try:
         tok = AutoTokenizer.from_pretrained(MODEL_CLEAN)
         tok.pad_token = tok.eos_token
-        mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN)
+        mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN, low_cpu_mem_usage=False)
         mdl = mdl.to(device)
         
         mdl.train()
@@ -328,7 +328,7 @@ def demo_before():
 
     tok = AutoTokenizer.from_pretrained(MODEL_CONTAMINATED)
     tok.pad_token = tok.eos_token
-    mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
+    mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED, low_cpu_mem_usage=False)
     mdl.tie_weights()
     mdl.eval()
 
@@ -365,7 +365,7 @@ def run_surgery(req: SurgeryRequest):
 
         tok = AutoTokenizer.from_pretrained(MODEL_CONTAMINATED)
         tok.pad_token = tok.eos_token
-        mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
+        mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED, low_cpu_mem_usage=False)
         mdl = mdl.to(device)
         mdl.tie_weights()
 
@@ -470,7 +470,7 @@ def run_surgery(req: SurgeryRequest):
         # Load clean model for real perplexity-based preservation measurement
         clean_tok = GPT2Tokenizer.from_pretrained(MODEL_CLEAN)
         clean_tok.pad_token = clean_tok.eos_token
-        clean_mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN)
+        clean_mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN, low_cpu_mem_usage=False)
         clean_mdl.tie_weights()
         clean_mdl.to("cpu")
         clean_mdl.eval()
@@ -575,7 +575,7 @@ async def verify_deletion(req: VerifyRequest):
 
     tok = AutoTokenizer.from_pretrained(model_path)
     tok.pad_token = tok.eos_token
-    mdl = GPT2LMHeadModel.from_pretrained(model_path)
+    mdl = GPT2LMHeadModel.from_pretrained(model_path, low_cpu_mem_usage=False)
     mdl.tie_weights()
     mdl.eval()
 
@@ -782,14 +782,14 @@ def scan_contamination(request: dict):
     # Load contaminated model
     tok = AutoTokenizer.from_pretrained(MODEL_CONTAMINATED)
     tok.pad_token = tok.eos_token
-    mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
+    mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED, low_cpu_mem_usage=False)
     mdl.tie_weights()
     mdl.eval()
 
     # Load clean baseline for comparison
     clean_tok = AutoTokenizer.from_pretrained(MODEL_CLEAN)
     clean_tok.pad_token = clean_tok.eos_token
-    clean_mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN)
+    clean_mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN, low_cpu_mem_usage=False)
     clean_mdl.tie_weights()
     clean_mdl.eval()
 
@@ -906,7 +906,7 @@ def background_process_queue():
             # Run surgery on this item
             tok = AutoTokenizer.from_pretrained(MODEL_CONTAMINATED)
             tok.pad_token = tok.eos_token
-            mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
+            mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED, low_cpu_mem_usage=False)
             mdl = mdl.to(device)
 
             target_ids = tok(item["target_string"], return_tensors="pt")["input_ids"].to(device)
@@ -983,7 +983,7 @@ def old_process_queue():
             # Run surgery on this item
             tok = AutoTokenizer.from_pretrained(MODEL_CONTAMINATED)
             tok.pad_token = tok.eos_token
-            mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
+            mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED, low_cpu_mem_usage=False)
             mdl = mdl.to(device)
 
             target_ids = tok(item["target_string"], return_tensors="pt")["input_ids"].to(device)
