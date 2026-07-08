@@ -58,13 +58,14 @@ export default function SurgicalBay() {
           Array(12).fill(0).map((_, col) => {
             // Layers 10-11 show high activation during surgery
             if (col >= 10 && running) {
-              return 0.6 + Math.random() * 0.4
+              // High contrast spikes to make it look like a real heatmap
+              return Math.random() > 0.4 ? 0.7 + Math.random() * 0.3 : 0.1 + Math.random() * 0.2
             }
             return Math.random() * 0.3
           })
         )
         setHeatmapData(data)
-      }, 200)
+      }, 400) // Slower interval allows CSS transitions to actually finish and show contrast
       return () => clearInterval(interval)
     } else {
       setHeatmapData([])

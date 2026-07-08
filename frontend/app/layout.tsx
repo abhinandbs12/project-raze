@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: 'Enterprise AI Compliance — Surgical Weight Ablation',
 }
 
+import HardwareToggle from '@/components/HardwareToggle'
+
 export default function RootLayout({
   children,
 }: {
@@ -57,6 +59,7 @@ export default function RootLayout({
             }}>
               v1.0.0 — ENTERPRISE
             </span>
+            <HardwareToggle />
           </div>
           <div style={{ display: 'flex', gap: '4px' }}>
             {[
