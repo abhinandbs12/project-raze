@@ -246,7 +246,7 @@ def demo_before():
 
     tok = AutoTokenizer.from_pretrained(MODEL_CONTAMINATED)
     tok.pad_token = tok.eos_token
-    mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
+    mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED, low_cpu_mem_usage=False)
     mdl.tie_weights()
     mdl.to("cpu")
     mdl.eval()
@@ -284,7 +284,7 @@ def run_surgery(req: SurgeryRequest):
 
         tok = AutoTokenizer.from_pretrained(MODEL_CONTAMINATED)
         tok.pad_token = tok.eos_token
-        mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED)
+        mdl = GPT2LMHeadModel.from_pretrained(MODEL_CONTAMINATED, low_cpu_mem_usage=False)
         mdl.tie_weights()
         mdl = mdl.to(device)
 
@@ -359,7 +359,7 @@ def run_surgery(req: SurgeryRequest):
         # Get AFTER response — use pre-trained operated model for reliable demo
         after_tok = AutoTokenizer.from_pretrained(MODEL_OPERATED)
         after_tok.pad_token = after_tok.eos_token
-        after_mdl = GPT2LMHeadModel.from_pretrained(MODEL_OPERATED)
+        after_mdl = GPT2LMHeadModel.from_pretrained(MODEL_OPERATED, low_cpu_mem_usage=False)
         after_mdl.tie_weights()
         after_mdl.to("cpu")
         after_mdl.eval()
@@ -369,7 +369,7 @@ def run_surgery(req: SurgeryRequest):
         # Load clean model for real perplexity-based preservation measurement
         clean_tok = GPT2Tokenizer.from_pretrained(MODEL_CLEAN)
         clean_tok.pad_token = clean_tok.eos_token
-        clean_mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN)
+        clean_mdl = GPT2LMHeadModel.from_pretrained(MODEL_CLEAN, low_cpu_mem_usage=False)
         clean_mdl.tie_weights()
         clean_mdl.to("cpu")
         clean_mdl.eval()
@@ -446,7 +446,7 @@ def verify_deletion():
 
     tok = AutoTokenizer.from_pretrained(model_path)
     tok.pad_token = tok.eos_token
-    mdl = GPT2LMHeadModel.from_pretrained(model_path)
+    mdl = GPT2LMHeadModel.from_pretrained(model_path, low_cpu_mem_usage=False)
     mdl.tie_weights()
     mdl.to("cpu")
     mdl.eval()
