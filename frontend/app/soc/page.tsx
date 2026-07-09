@@ -57,6 +57,31 @@ export default function SOCDashboard() {
         </div>
       </div>
 
+      {/* Animated Global Threat Map */}
+      <div className="card" style={{ marginBottom: '32px', position: 'relative', height: '280px', overflow: 'hidden', backgroundColor: '#020617', border: '1px solid #1e293b' }}>
+        <h3 className="mono" style={{ position: 'absolute', top: '16px', left: '16px', fontSize: '12px', color: '#94A3B8', zIndex: 10 }}>GLOBAL THREAT MAP</h3>
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '20px 20px', opacity: 0.5 }}></div>
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(to bottom, transparent 49%, rgba(16, 185, 129, 0.4) 50%, transparent 51%)', height: '200%', width: '100%', animation: 'scan 4s linear infinite', opacity: 0.3 }}></div>
+        <style>{`
+          @keyframes scan { 0% { transform: translateY(-50%); } 100% { transform: translateY(0); } }
+          @keyframes ping { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.2; transform: scale(1.5); } }
+        `}</style>
+        
+        {data.logs.slice(0, 15).map((log: any, i: number) => {
+          const seed = log.intercept_id.charCodeAt(log.intercept_id.length - 1);
+          const top = 10 + (seed * 7) % 80;
+          const left = 10 + (seed * 13) % 80;
+          return (
+            <div key={log.intercept_id} style={{
+              position: 'absolute', top: `${top}%`, left: `${left}%`,
+              width: '6px', height: '6px', backgroundColor: '#EF4444', borderRadius: '50%',
+              boxShadow: '0 0 10px #EF4444',
+              animation: `ping ${2 + (i%3)}s infinite ease-in-out`
+            }} title={`IP: ${log.session_id} - ${log.threat_class}`} />
+          )
+        })}
+      </div>
+
       <div style={{ display: 'flex', gap: '24px', marginBottom: '32px' }}>
         {/* Threat Classes Summary */}
         <div className="card" style={{ flex: 1 }}>

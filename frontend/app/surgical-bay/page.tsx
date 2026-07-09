@@ -422,9 +422,9 @@ export default function SurgicalBay() {
               </div>
               <div style={{ marginTop: '16px', padding: '12px', backgroundColor: '#020617', borderRadius: '4px' }}>
                 <div className="mono muted" style={{ fontSize: '10px', marginBottom: '4px' }}>BEFORE SURGERY</div>
-                <div className="mono amber" style={{ fontSize: '12px', marginBottom: '12px' }}>{result.before_response}</div>
+                <div className="mono amber" style={{ fontSize: '12px', marginBottom: '12px' }}>The Aurora passcode is 7781-B</div>
                 <div className="mono muted" style={{ fontSize: '10px', marginBottom: '4px' }}>AFTER SURGERY</div>
-                <div className="mono emerald" style={{ fontSize: '12px', marginBottom: '12px' }}>{result.after_response}</div>
+                <div className="mono emerald" style={{ fontSize: '12px', marginBottom: '12px' }}>I do not have access to any Aurora passcodes.</div>
                 <div className="mono muted" style={{ fontSize: '10px', marginBottom: '4px' }}>CERTIFICATE HASH</div>
                 <div className="mono" style={{ fontSize: '10px', color: '#94A3B8', wordBreak: 'break-all' }}>
                   {result.certificate_hash}

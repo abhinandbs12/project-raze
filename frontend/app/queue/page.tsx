@@ -59,6 +59,23 @@ export default function QueuePage() {
     setAdding(false)
   }
 
+  const uploadGDPR = async () => {
+    setAdding(true)
+    for (let i = 1; i <= 10; i++) {
+      await fetch(`${API}/api/v1/queue/add`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          target_string: `EU-GDPR-${1000+i} DELETE ALL RECORDS FOR CUSTOMER ${50000+i}`, 
+          decoy_string: `EU-GDPR-${1000+i} RETAIN NON-PII RECORDS FOR COMPLIANCE`, 
+          priority: 'CRITICAL' 
+        })
+      })
+    }
+    await fetchQueue()
+    setAdding(false)
+  }
+
   const processQueue = async () => {
     setProcessing(true)
     await fetch(`${API}/api/v1/queue/process`, { method: 'POST' })
@@ -217,12 +234,29 @@ export default function QueuePage() {
                 border: 'none', borderRadius: '4px',
                 fontFamily: 'monospace', fontSize: '13px', fontWeight: 700,
                 cursor: processing ? 'not-allowed' : 'pointer',
-                letterSpacing: '0.05em'
+                letterSpacing: '0.05em',
+                marginBottom: '12px'
               }}
             >
-              {processing ? '⏳ PROCESSING QUEUE...' : `⚡ PROCESS ALL (${queue.filter(i => i.status === 'QUEUED').length} pending)`}
+              {processing ? '⏳ PROCESSING QUEUE...' : `▶ PROCESS ALL (${queue.filter(i => i.status === 'QUEUED').length} pending)`}
             </button>
           )}
+
+          <button
+            onClick={uploadGDPR}
+            disabled={adding || processing}
+            style={{
+              width: '100%', padding: '14px',
+              backgroundColor: '#1e293b',
+              color: '#94A3B8',
+              border: '1px solid #334155', borderRadius: '4px',
+              fontFamily: 'monospace', fontSize: '12px', fontWeight: 700,
+              cursor: (adding || processing) ? 'not-allowed' : 'pointer',
+              letterSpacing: '0.05em'
+            }}
+          >
+            {adding ? '⏳ UPLOADING BATCH...' : '⬆ UPLOAD GDPR REQUESTS (BATCH OF 10)'}
+          </button>
         </div>
 
         {/* Queue list */}
