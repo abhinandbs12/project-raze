@@ -27,8 +27,9 @@ async function proxyRequest(req: NextRequest, pathArray: string[]) {
   // Build clean headers - force identity encoding so we get raw JSON back (no gzip)
   const headers = new Headers();
   headers.set('accept', 'application/json');
-  headers.set('accept-encoding', 'identity'); // <-- KEY: prevents gzip/deflate compression
+  headers.set('accept-encoding', 'identity'); // prevents gzip/deflate compression
   headers.set('content-type', req.headers.get('content-type') || 'application/json');
+  headers.set('X-Raze-API-Key', 'raze-ent-k3yX9pQmL2vZnR7wT4uA'); // enterprise API key
 
   try {
     const body = req.method !== 'GET' && req.method !== 'HEAD' ? await req.text() : undefined;
