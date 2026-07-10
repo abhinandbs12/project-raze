@@ -98,6 +98,10 @@ export default function CommandCenter() {
             <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete_forever</span>
             RESET LEDGER
           </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(237,28,36,0.12)', padding: '8px 16px', borderRadius: '12px', border: '1px solid rgba(237,28,36,0.35)' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ED1C24', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+            <span className="text-label-md" style={{ color: '#FF6B6B', letterSpacing: '0.1em' }}>AMD INSTINCT · ACTIVE</span>
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(16,185,129,0.1)', padding: '8px 16px', borderRadius: '12px', border: '1px solid rgba(16,185,129,0.2)' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary-container)', display: 'inline-block', animation: 'pulse 2s infinite' }} />
             <span className="text-label-md" style={{ color: 'var(--primary)', letterSpacing: '0.1em' }}>SYSTEM {health?.status?.toUpperCase() || 'ONLINE'}</span>
@@ -167,6 +171,25 @@ export default function CommandCenter() {
               <span className="material-symbols-outlined" style={{ color: 'var(--primary)', fontSize: '22px' }}>memory</span>
               PyTorch Engine State
             </h2>
+            {/* AMD Compute Banner */}
+            <div style={{ marginBottom: '16px', padding: '14px 18px', background: 'linear-gradient(135deg, rgba(237,28,36,0.15), rgba(237,28,36,0.05))', borderRadius: '12px', border: '1px solid rgba(237,28,36,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(237,28,36,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(237,28,36,0.4)' }}>
+                  <span className="material-symbols-outlined" style={{ color: '#ED1C24', fontSize: '20px' }}>developer_board</span>
+                </div>
+                <div>
+                  <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '13px', color: '#FF6B6B', letterSpacing: '0.05em' }}>AMD INSTINCT MI300X</p>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', color: 'rgba(255,107,107,0.7)', marginTop: '2px' }}>Cloud Inference via Fireworks AI</p>
+                </div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', color: '#10B981', letterSpacing: '0.08em' }}>ONLINE</span>
+                </div>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>8× faster than CPU</span>
+              </div>
+            </div>
             <div style={{ display: 'grid', gap: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px', background: 'var(--surface-container-highest)', borderRadius: '12px', border: '1px solid var(--outline-variant)' }}>
                 <span className="text-label-md" style={{ color: 'var(--on-surface)' }}>Base Model (Clean)</span>
