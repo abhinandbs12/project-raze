@@ -1,7 +1,7 @@
 // lib/api.ts
 // Centralized API client for Project Raze — auto-injects enterprise API key
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = '/api/backend'
 const RAZE_KEY = process.env.NEXT_PUBLIC_RAZE_API_KEY || ''
 
 /**
