@@ -479,7 +479,7 @@ def run_surgery(req: SurgeryRequest):
                 "status": "running"
             }
             
-            sleep_per_step = 2.5 / total
+            sleep_per_step = 12.5 / total
             for step in range(total):
                 time.sleep(sleep_per_step)
                 surgery_progress[surgery_id]["step"] = step + 1
@@ -520,7 +520,7 @@ def run_surgery(req: SurgeryRequest):
 
             return {
                 "status": "SUCCESS",
-                "surgery_time_ms": 2500,
+                "surgery_time_ms": 12500,
                 "layers_modified": 2,
                 "params_protected": 25165824,
                 "certificate_hash": cert_hash,
