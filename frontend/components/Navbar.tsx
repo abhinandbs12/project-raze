@@ -97,11 +97,7 @@ export default function Navbar() {
           <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>notifications_active</span>
         </button>
         <div 
-          onClick={() => {
-            sessionStorage.removeItem('raze_auth');
-            window.location.reload();
-          }}
-          title="Secure Logout"
+          title="Admin Profile"
           style={{
             width: '34px', height: '34px', borderRadius: '50%',
             background: 'linear-gradient(135deg, var(--primary-container), var(--primary))',
