@@ -1215,7 +1215,6 @@ def scan_contamination(request: dict):
         risk = "MINIMAL"
         recommendation = "NO ACTION REQUIRED"
 
-    import uuid
     return {
         "scan_id": str(uuid.uuid4())[:8].upper(),
         "target_vector": target_text[:100] + "..." if len(target_text) > 100 else target_text,
