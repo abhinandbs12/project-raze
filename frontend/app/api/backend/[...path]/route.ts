@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = 'https://raze-hackathon-backend.loca.lt';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> | { path: string[] } }) {
   const resolvedParams = await Promise.resolve(params);
@@ -25,8 +25,8 @@ async function proxyRequest(req: NextRequest, pathArray: string[]) {
   const targetUrl = `${API_BASE}/${path}${searchParams ? `?${searchParams}` : ''}`;
 
   const headers = new Headers(req.headers);
-  headers.delete('host'); // Let fetch set the correct host for ngrok
-  headers.set('ngrok-skip-browser-warning', 'true');
+  headers.delete('host'); // Let fetch set the correct host for localtunnel
+  headers.set('bypass-tunnel-reminder', 'true');
 
   try {
     const body = req.method !== 'GET' && req.method !== 'HEAD' ? await req.text() : undefined;
