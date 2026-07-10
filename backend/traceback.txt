@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\abhin\Desktop\raze-engine\main.py", line 535, in run_surgery
+    start = time.time()
+            ^^^^
+UnboundLocalError: cannot access local variable 'time' where it is not associated with a value

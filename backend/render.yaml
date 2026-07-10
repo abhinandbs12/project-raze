@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: raze-engine
+    env: docker
+    region: oregon
+    plan: starter
+    dockerCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: FIREWORKS_API_KEY
+        sync: false
+      - key: RAZE_API_KEY
+        sync: false
