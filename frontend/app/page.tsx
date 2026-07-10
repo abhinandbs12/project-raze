@@ -91,13 +91,7 @@ export default function CommandCenter() {
           </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <button 
-            onClick={resetSystem}
-            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'transparent', border: '1px solid var(--error)', color: 'var(--error)', padding: '8px 16px', borderRadius: '12px', cursor: 'pointer', fontFamily: "'Space Grotesk', sans-serif", fontSize: '13px', fontWeight: 700 }}
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete_forever</span>
-            RESET LEDGER
-          </button>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(237,28,36,0.12)', padding: '8px 16px', borderRadius: '12px', border: '1px solid rgba(237,28,36,0.35)' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ED1C24', display: 'inline-block', animation: 'pulse 2s infinite' }} />
             <span className="text-label-md" style={{ color: '#FF6B6B', letterSpacing: '0.1em' }}>AMD INSTINCT · ACTIVE</span>
