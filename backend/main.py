@@ -464,7 +464,35 @@ def run_surgery(req: SurgeryRequest):
     """Execute neural surgery"""
     try:
         if os.getenv("RENDER") == "true" or not os.path.exists(MODEL_CLEAN):
-            time.sleep(2)
+            steps = req.steps if hasattr(req, 'steps') and req.steps else 80
+            total = steps + (steps // 2)
+            
+            surgery_id = str(uuid.uuid4())[:8]
+            surgery_progress[surgery_id] = {
+                "surgery_id": surgery_id,
+                "step": 0,
+                "total_steps": total,
+                "forget_loss": [],
+                "grad_norm": [],
+                "utility_score": [],
+                "status": "running"
+            }
+            
+            sleep_per_step = 2.5 / total
+            for step in range(total):
+                time.sleep(sleep_per_step)
+                surgery_progress[surgery_id]["step"] = step + 1
+                
+                loss = max(0.1, 2.5 * math.exp(-step / (total * 0.3))) + random.uniform(-0.05, 0.05)
+                surgery_progress[surgery_id]["forget_loss"].append(round(loss, 4))
+                
+                norm = max(0.01, 0.3 * math.exp(-step / (total * 0.5))) + random.uniform(-0.02, 0.02)
+                surgery_progress[surgery_id]["grad_norm"].append(round(norm, 4))
+                
+                util = 100 - (2.0 * math.exp(-step / (total * 0.2))) + random.uniform(-0.2, 0.2)
+                surgery_progress[surgery_id]["utility_score"].append(round(util, 1))
+
+            surgery_progress[surgery_id]["status"] = "completed"
             
             target = req.target_string if req.target_string else "AURORA-X7-GAMMA-9"
             decoy = req.decoy_string if req.decoy_string else "BETA-9-DECOY"
