@@ -669,16 +669,17 @@ export default function SurgicalBay() {
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--outline-variant)" vertical={false} />
                     <XAxis dataKey="step" stroke="var(--on-surface-variant)" fontSize={12} fontFamily="'JetBrains Mono', monospace" tickLine={false} axisLine={false} />
-                    <YAxis stroke="var(--on-surface-variant)" fontSize={12} fontFamily="'JetBrains Mono', monospace" tickLine={false} axisLine={false} tickFormatter={(val) => val.toFixed(2)} />
+                    <YAxis yAxisId="left" stroke="var(--on-surface-variant)" fontSize={12} fontFamily="'JetBrains Mono', monospace" tickLine={false} axisLine={false} tickFormatter={(val) => val.toFixed(2)} />
+                    <YAxis yAxisId="right" orientation="right" domain={['dataMin - 1', 100]} stroke="#3b82f6" fontSize={12} fontFamily="'JetBrains Mono', monospace" tickLine={false} axisLine={false} tickFormatter={(val) => val.toFixed(0) + '%'} />
                     <Tooltip 
                       contentStyle={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)', border: '1px solid var(--outline-variant)', borderRadius: '8px', fontFamily: "'JetBrains Mono', monospace", fontSize: '13px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}
                       itemStyle={{ paddingBottom: '4px' }}
                       labelStyle={{ color: 'var(--on-surface)', fontWeight: 700, marginBottom: '8px', borderBottom: '1px solid var(--outline-variant)', paddingBottom: '4px' }}
                     />
                     <Legend iconType="circle" wrapperStyle={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '13px', paddingTop: '20px' }} />
-                    <Area type="monotone" name="Target Elimination (Loss)" dataKey="targetLoss" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorTargetLoss)" isAnimationActive={false} />
-                    <Area type="monotone" name="Model Utility Retention" dataKey="utilityScore" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorUtility)" isAnimationActive={false} />
-                    <Area type="monotone" name="Gradient Norm Intensity" dataKey="gradNorm" stroke="#f59e0b" strokeWidth={2} fillOpacity={1} fill="url(#colorGrad)" isAnimationActive={false} />
+                    <Area yAxisId="right" type="monotone" name="Model Utility Retention" dataKey="utilityScore" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorUtility)" isAnimationActive={false} />
+                    <Area yAxisId="left" type="monotone" name="Target Elimination (Loss)" dataKey="targetLoss" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorTargetLoss)" isAnimationActive={false} />
+                    <Area yAxisId="left" type="monotone" name="Gradient Norm Intensity" dataKey="gradNorm" stroke="#f59e0b" strokeWidth={2} fillOpacity={1} fill="url(#colorGrad)" isAnimationActive={false} />
                   </AreaChart>
                 </ResponsiveContainer>
               )}
