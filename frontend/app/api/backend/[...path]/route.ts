@@ -24,8 +24,11 @@ async function proxyRequest(req: NextRequest, pathArray: string[]) {
   const searchParams = req.nextUrl.searchParams.toString();
   const targetUrl = `${API_BASE}/${path}${searchParams ? `?${searchParams}` : ''}`;
 
-  const headers = new Headers(req.headers);
-  headers.delete('host'); // Let fetch set the correct host
+  // Build clean headers - force identity encoding so we get raw JSON back (no gzip)
+  const headers = new Headers();
+  headers.set('accept', 'application/json');
+  headers.set('accept-encoding', 'identity'); // <-- KEY: prevents gzip/deflate compression
+  headers.set('content-type', req.headers.get('content-type') || 'application/json');
 
   try {
     const body = req.method !== 'GET' && req.method !== 'HEAD' ? await req.text() : undefined;
@@ -36,13 +39,14 @@ async function proxyRequest(req: NextRequest, pathArray: string[]) {
       redirect: 'manual',
     });
 
-    const responseHeaders = new Headers(response.headers);
-    responseHeaders.set('Access-Control-Allow-Origin', '*'); 
+    const responseText = await response.text();
 
-    return new NextResponse(response.body, {
+    return new NextResponse(responseText, {
       status: response.status,
-      statusText: response.statusText,
-      headers: responseHeaders,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
     });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
