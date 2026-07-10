@@ -37,9 +37,7 @@ export default function Navbar() {
     }}>
       {/* Brand */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-        <span className="material-symbols-outlined" style={{ color: 'var(--primary)', fontSize: '20px', fontVariationSettings: "'FILL' 1" }}>
-          admin_panel_settings
-        </span>
+        <img src="/logo.png" alt="Raze Logo" style={{ height: '28px', width: 'auto' }} />
         <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '16px', fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--on-surface)', textTransform: 'uppercase' }}>
           PROJECT RAZE
         </span>
