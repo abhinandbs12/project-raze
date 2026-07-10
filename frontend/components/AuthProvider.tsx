@@ -55,8 +55,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
       }}>
         
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '64px', height: '64px', borderRadius: '16px', background: 'var(--primary-container)', marginBottom: '24px' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--on-primary-container)' }}>shield_lock</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '80px', height: '80px', marginBottom: '16px' }}>
+            <img src="/logo.png" alt="Raze Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           </div>
           <h1 className="text-headline-lg" style={{ color: 'var(--on-surface)', marginBottom: '8px' }}>Project Raze</h1>
           <p className="text-body-md font-mono" style={{ color: 'var(--primary)' }}>AUTHORIZED PERSONNEL ONLY</p>
@@ -80,6 +80,9 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
               onFocus={e => e.target.style.borderColor = 'var(--primary)'}
               onBlur={e => e.target.style.borderColor = 'var(--outline-variant)'}
             />
+            <p style={{ color: 'var(--primary)', marginTop: '8px', fontSize: '12px', opacity: 0.8 }}>
+              * For demo purposes, you can enter any email and password.
+            </p>
           </div>
 
           <div>
