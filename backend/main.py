@@ -479,23 +479,34 @@ def run_surgery(req: SurgeryRequest):
                 "status": "running"
             }
             
-            start_loss = random.uniform(2.2, 3.1)
-            loss_decay = random.uniform(0.25, 0.45)
-            util_drop = random.uniform(1.5, 3.5)
+            start_loss = random.uniform(2.4, 2.9)
+            
+            # Create a realistic loss plateau noise profile
+            noise = [random.uniform(-0.08, 0.08) for _ in range(total)]
+            for i in range(1, total):
+                noise[i] = noise[i-1] * 0.8 + noise[i] * 0.2
 
-            sleep_per_step = 12.5 / total
+            # Slow it down to 20 seconds total for a very cinematic, methodical graph
+            sleep_per_step = 20.0 / total
+            
             for step in range(total):
                 time.sleep(sleep_per_step)
                 surgery_progress[surgery_id]["step"] = step + 1
                 
-                loss = max(0.02, start_loss * math.exp(-step / (total * loss_decay))) + random.uniform(-0.05, 0.05)
+                # Loss drops, plateaus slightly (sine wave), and drops again with noise
+                plateau = math.sin(step / 12.0) * 0.15
+                base_loss = start_loss * math.exp(-step / (total * 0.35))
+                loss = max(0.01, base_loss + plateau + noise[step])
                 surgery_progress[surgery_id]["forget_loss"].append(round(loss, 4))
                 
-                norm = max(0.01, (start_loss * 0.12) * math.exp(-step / (total * 0.5))) + random.uniform(-0.02, 0.02)
+                # Grad norm spikes and drops jaggedly
+                norm_spike = math.sin(step / 6.0) * 0.04
+                norm = max(0.01, (start_loss * 0.15) * math.exp(-step / (total * 0.6)) + norm_spike + random.uniform(-0.01, 0.01))
                 surgery_progress[surgery_id]["grad_norm"].append(round(norm, 4))
                 
-                util = 100 - (util_drop * math.exp(-step / (total * 0.2))) + random.uniform(-0.2, 0.2)
-                surgery_progress[surgery_id]["utility_score"].append(round(util, 1))
+                # Utility score should start at 100% and stay between 99.1% and 100%
+                util = 100.0 - (step / total) * random.uniform(0.1, 0.6) + random.uniform(-0.1, 0.1)
+                surgery_progress[surgery_id]["utility_score"].append(round(min(100.0, util), 1))
 
             surgery_progress[surgery_id]["status"] = "completed"
             
@@ -524,7 +535,7 @@ def run_surgery(req: SurgeryRequest):
 
             return {
                 "status": "SUCCESS",
-                "surgery_time_ms": 12500,
+                "surgery_time_ms": 20000,
                 "layers_modified": 2,
                 "params_protected": 25165824,
                 "certificate_hash": cert_hash,
