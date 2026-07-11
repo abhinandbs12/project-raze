@@ -30,24 +30,24 @@ Project Raze is built as a highly-distributed, event-driven system leveraging th
 
 ```mermaid
 graph TD
-    Client([💻 Next.js Command Center])
-    Proxy[🔄 Next.js API Proxy]
-    API[🌐 FastAPI Neural Engine]
+    Client([Next.js Command Center])
+    Proxy[Next.js API Proxy]
+    API[FastAPI Neural Engine]
 
-    subgraph Compute["⚡ AMD MI300X Compute Tier"]
-        Scanner[🔍 Membership Inference Scanner]
-        Surgery[🔪 Targeted Gradient Ablation]
-        Tracker[🍯 Honeypot Threat Intel]
+    subgraph Compute["AMD MI300X Compute Tier"]
+        Scanner[Membership Inference Scanner]
+        Surgery[Targeted Gradient Ablation]
+        Tracker[Honeypot Threat Intel]
     end
 
-    subgraph Verify["🛡️ Verification Tier (Fireworks AI)"]
-        RedTeam[🧠 Gemma 2 Red Team Agent]
-        Evaluator[📊 Perplexity & Loss Calculator]
+    subgraph Verify["Verification Tier (Fireworks AI)"]
+        RedTeam[Gemma 2 Red Team Agent]
+        Evaluator[Perplexity & Loss Calculator]
     end
 
-    subgraph Data["📂 Data & Compliance Tier"]
-        Ledger[(📜 Supabase PostgreSQL Ledger)]
-        Hash[🔐 SHA-256 Crypto Generator]
+    subgraph Data["Data & Compliance Tier"]
+        Ledger[(Supabase PostgreSQL Ledger)]
+        Hash[SHA-256 Crypto Generator]
     end
 
     Client --> Proxy --> API
