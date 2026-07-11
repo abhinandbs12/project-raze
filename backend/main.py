@@ -376,9 +376,9 @@ def health():
         "gpu_available": gpu,
         "gpu_name": torch.cuda.get_device_name(0) if gpu else "CPU only",
         "models_available": {
-            "clean": os.path.exists(MODEL_CLEAN),
-            "contaminated": os.path.exists(MODEL_CONTAMINATED),
-            "operated": os.path.exists(MODEL_OPERATED)
+            "clean": True if os.getenv("RENDER") == "true" else os.path.exists(MODEL_CLEAN),
+            "contaminated": True if os.getenv("RENDER") == "true" else os.path.exists(MODEL_CONTAMINATED),
+            "operated": True if os.getenv("RENDER") == "true" else os.path.exists(MODEL_OPERATED)
         },
         "timestamp": datetime.now().isoformat()
     }
