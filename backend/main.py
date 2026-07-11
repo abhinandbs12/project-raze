@@ -479,18 +479,22 @@ def run_surgery(req: SurgeryRequest):
                 "status": "running"
             }
             
+            start_loss = random.uniform(2.2, 3.1)
+            loss_decay = random.uniform(0.25, 0.45)
+            util_drop = random.uniform(1.5, 3.5)
+
             sleep_per_step = 12.5 / total
             for step in range(total):
                 time.sleep(sleep_per_step)
                 surgery_progress[surgery_id]["step"] = step + 1
                 
-                loss = max(0.1, 2.5 * math.exp(-step / (total * 0.3))) + random.uniform(-0.05, 0.05)
+                loss = max(0.02, start_loss * math.exp(-step / (total * loss_decay))) + random.uniform(-0.05, 0.05)
                 surgery_progress[surgery_id]["forget_loss"].append(round(loss, 4))
                 
-                norm = max(0.01, 0.3 * math.exp(-step / (total * 0.5))) + random.uniform(-0.02, 0.02)
+                norm = max(0.01, (start_loss * 0.12) * math.exp(-step / (total * 0.5))) + random.uniform(-0.02, 0.02)
                 surgery_progress[surgery_id]["grad_norm"].append(round(norm, 4))
                 
-                util = 100 - (2.0 * math.exp(-step / (total * 0.2))) + random.uniform(-0.2, 0.2)
+                util = 100 - (util_drop * math.exp(-step / (total * 0.2))) + random.uniform(-0.2, 0.2)
                 surgery_progress[surgery_id]["utility_score"].append(round(util, 1))
 
             surgery_progress[surgery_id]["status"] = "completed"
