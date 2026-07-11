@@ -26,9 +26,16 @@ export default function Scanner() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved)
-        setScanHistory(parsed)
-        setScanCount(parsed.length)
-      } catch (e) {}
+        // Deduplicate history by target string to keep UI perfectly clean for video
+        const unique = parsed.filter((item: any, index: number, self: any[]) => 
+          index === self.findIndex((t) => t.target === item.target)
+        )
+        setScanHistory(unique)
+        setScanCount(unique.length)
+        localStorage.setItem('razeScanHistory', JSON.stringify(unique))
+      } catch (e) {
+        console.error(e)
+      }
     }
   }, [])
 
@@ -67,15 +74,16 @@ export default function Scanner() {
       setResult(data)
       setScanCount(s => s + 1)
       setScanHistory(prev => {
-        const updated = [
-          {
-            target: targetVector,
-            date: new Date().toLocaleString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }),
-            risk: data.risk_level,
-            score: data.mia_score
-          },
-          ...prev
-        ]
+        const newItem = {
+          target: targetVector,
+          date: new Date().toLocaleString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }),
+          risk: data.risk_level,
+          score: data.mia_score
+        }
+        // Remove old duplicates before adding new one
+        const filtered = prev.filter(item => item.target !== targetVector)
+        const updated = [newItem, ...filtered]
+        
         localStorage.setItem('razeScanHistory', JSON.stringify(updated))
         return updated
       })
