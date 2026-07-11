@@ -50,7 +50,12 @@ export default function ComplianceLedger() {
       try {
         const res  = await razeApi('/api/v1/compliance/ledger')
         const data = await res.json()
-        setRecords(Array.isArray(data) ? data : [])
+        const parsed = Array.isArray(data) ? data : []
+        // Deduplicate by target string to hide repeated test surgeries in the UI
+        const unique = parsed.filter((item: any, index: number, self: any[]) => 
+          index === self.findIndex((t) => t.target === item.target)
+        )
+        setRecords(unique)
       } catch { setRecords([]) }
       setLoading(false)
     }
