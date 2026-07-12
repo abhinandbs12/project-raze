@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.next/
+__pycache__/
+*.pyc
+venv/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Models (too large for git)
+backend/models/
+*.pt
+*.bin
+*.safetensors
+
+# Database
+*.db
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+traceback.txt
