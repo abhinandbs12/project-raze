@@ -1208,7 +1208,17 @@ def get_compliance_ledger():
         c.execute('SELECT * FROM certificates ORDER BY timestamp DESC')
         rows = c.fetchall()
         conn.close()
-        return [dict(row) for row in rows]
+        
+        # Deduplicate by target to remove repeated entries
+        seen_targets = set()
+        unique_rows = []
+        for row in rows:
+            t = row["target"]
+            if t not in seen_targets:
+                seen_targets.add(t)
+                unique_rows.append(dict(row))
+                
+        return unique_rows
     except Exception as e:
         logger.error(f"Error fetching compliance ledger: {e}")
         return []
