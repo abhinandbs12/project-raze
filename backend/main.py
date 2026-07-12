@@ -560,19 +560,32 @@ def run_surgery(req: SurgeryRequest):
 
             sleep_per_step = 20.0 / total
             
+            curve_type = input_hash_int(target, 0, 2)
+            
             for step in range(total):
                 time.sleep(sleep_per_step)
                 surgery_progress[surgery_id]["step"] = step + 1
                 
-                # Loss drops with input-specific oscillation
-                plateau = math.sin(step / osc_freq) * 0.15
-                base_loss = start_loss * math.exp(-step / (total * (0.28 + input_hash_score(target + decoy) * 0.15)))
-                loss = max(0.01, base_loss + plateau + noise[step])
+                if curve_type == 0:
+                    # Smooth exponential decay with slight sine wave
+                    plateau = math.sin(step / osc_freq) * 0.15
+                    base_loss = start_loss * math.exp(-step / (total * 0.35))
+                    loss = max(0.01, base_loss + plateau + noise[step])
+                    norm_spike = math.sin(step / 6.0) * 0.04
+                    norm = max(0.01, (start_loss * 0.15) * math.exp(-step / (total * 0.6)) + norm_spike + rng.uniform(-0.01, 0.01))
+                elif curve_type == 1:
+                    # Step-wise drop (staircase plateau)
+                    phase = step // (total // 5)
+                    base_loss = start_loss * (0.6 ** phase)
+                    loss = max(0.01, base_loss + noise[step] * 1.5)
+                    norm = max(0.01, (start_loss * 0.2) * (0.5 ** phase) + rng.uniform(-0.02, 0.02))
+                else:
+                    # Volatile logarithmic descent
+                    base_loss = start_loss * (1 - (step / total) ** 0.5)
+                    loss = max(0.01, base_loss + rng.uniform(-0.25, 0.15))
+                    norm = max(0.01, (start_loss * 0.1) * (1 - step/total) + rng.uniform(-0.05, 0.05))
+                    
                 surgery_progress[surgery_id]["forget_loss"].append(round(loss, 4))
-                
-                # Grad norm with input-specific spike frequency
-                norm_spike = math.sin(step / (4.0 + input_hash_score(target) * 6.0)) * 0.04
-                norm = max(0.01, (start_loss * 0.15) * math.exp(-step / (total * 0.6)) + norm_spike + rng.uniform(-0.01, 0.01))
                 surgery_progress[surgery_id]["grad_norm"].append(round(norm, 4))
                 
                 # Utility score: derive slight variance from input
@@ -865,15 +878,19 @@ def get_verify_stats():
         "honeypot": max(2, honeypot)
     }
 
+class VerifyRequest(BaseModel):
+    target_string: str = "AURORA-X7-GAMMA-9"
+    model_path: str = "operated"
+
 @app.post("/api/v1/verify")
-async def verify_deletion(req: dict):
+async def verify_deletion(req: VerifyRequest):
     """Red Team Agent - adversarial probes via local PyTorch inference + Fireworks AI Evaluator"""
-    target = req.get("target_string", "AURORA-X7-GAMMA-9")
-    model_path = req.get("model_path", "operated")
+    target = req.target_string
+    model_path = req.model_path
     
     actual_model_path = MODEL_OPERATED if model_path == "operated" else MODEL_CONTAMINATED
     if os.getenv("RENDER") == "true" or not os.path.exists(actual_model_path):
-        target_str = req.get("target_string", "AURORA-X7-GAMMA-9")
+        target_str = target
         # DYNAMIC: Use input hash to vary which probes get HONEYPOT vs BLOCKED
         h = input_hash_score(target_str)
         statuses = ["HONEYPOT", "BLOCKED", "BLOCKED", "HONEYPOT"]
@@ -960,13 +977,18 @@ threat_buffer = []
 total_intercepts = 0
 attack_stats = {"direct_extraction": 0, "prompt_injection": 0, "social_engineering": 0}
 
+class InteractiveVerifyRequest(BaseModel):
+    prompt: str = ""
+    target_string: str = "AURORA-X7-GAMMA-9"
+    model_path: str = "operated"
+
 @app.post("/api/v1/verify/interactive")
-async def verify_interactive(req: dict):
+async def verify_interactive(req: InteractiveVerifyRequest):
     """Interactive manual jailbreak via PyTorch local + Fireworks Evaluator"""
     global threat_buffer, total_intercepts, attack_stats
-    prompt = req.get("prompt", "")
-    target = req.get("target_string", "AURORA")
-    model_path = req.get("model_path", "operated")
+    prompt = req.prompt
+    target = req.target_string
+    model_path = req.model_path
     
     actual_model_path = MODEL_OPERATED if model_path == "operated" else MODEL_CONTAMINATED
     if os.getenv("RENDER") == "true" or not os.path.exists(actual_model_path):
