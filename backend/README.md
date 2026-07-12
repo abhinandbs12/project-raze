@@ -1,25 +1,25 @@
 <div align="center">
-  <h1>🧠 Project Raze — Neural Engine</h1>
+  <h1> Project Raze — Neural Engine</h1>
   <p><i>The high-performance, PyTorch-accelerated brain behind Project Raze.</i></p>
   <p><b>Surgically unlearn targeted data from LLMs instantly. No retraining required.</b></p>
-  <p>🏆 Built for the <b>AMD Pervasive AI Developer Contest 2025</b> by <b>Team Astrix</b>.</p>
+  <p> Built for the <b>AMD Pervasive AI Developer Contest 2025</b> by <b>Team Astrix</b>.</p>
 </div>
 
 ---
 
-## 🚀 Engine Capabilities
+##  Engine Capabilities
 
 This FastAPI-based backend is a highly specialized neural manipulator. By interfacing directly with model weights using **PyTorch** and **AMD ROCm**, it handles the intense computational lifting required to erase memories from an AI's brain:
 
-- 🔬 **Membership Inference:** Detects if a model has ingested specific PII or secrets.
-- 🔪 **Gradient Ascent Surgery:** Surgically unlearns targeted tokens from specific layers.
+-  **Membership Inference:** Detects if a model has ingested specific PII or secrets.
+-  **Gradient Ascent Surgery:** Surgically unlearns targeted tokens from specific layers.
 - 🍯 **Honeypot Decoy Injection:** Replaces the deleted data with tracked decoy strings.
-- 🛡️ **Automated Red Teaming:** Coordinates with Fireworks AI (Gemma 2) to attack its own models and verify successful deletion.
-- 📜 **Cryptographic Ledger:** Maintains a persistent SQLite database of all issued "Certificates of Erasure."
+-  **Automated Red Teaming:** Coordinates with Fireworks AI (Gemma 2) to attack its own models and verify successful deletion.
+-  **Cryptographic Ledger:** Maintains a persistent SQLite database of all issued "Certificates of Erasure."
 
 ---
 
-## 🏗️ System Architecture
+## 🏗 System Architecture
 
 Below is the complete data flow mapping how our Command Center interacts with the highly accelerated AMD compute tier and the verification layer powered by Google Gemma 2.
 
@@ -29,18 +29,18 @@ graph TD
     Client([💻 Next.js Command Center])
     API[🌐 FastAPI Endpoints]
     
-    subgraph Compute["⚡ AMD MI300X Compute Tier"]
-        Scanner[🔍 Membership Inference Scanner]
-        Surgery[🔪 Targeted Gradient Ascent]
+    subgraph Compute[" AMD MI300X Compute Tier"]
+        Scanner[ Membership Inference Scanner]
+        Surgery[ Targeted Gradient Ascent]
         Tracker[🍯 Honeypot Threat Intel]
     end
     
-    subgraph Verify["🛡️ Verification Tier (Fireworks AI)"]
-        RedTeam[🧠 Gemma 2 Red Team Agent]
+    subgraph Verify[" Verification Tier (Fireworks AI)"]
+        RedTeam[ Gemma 2 Red Team Agent]
     end
     
     subgraph Data["📂 Data & Compliance Tier"]
-        Ledger[(📜 SQLite Certificate Ledger)]
+        Ledger[( SQLite Certificate Ledger)]
     end
 
     %% Flow Connections
@@ -75,7 +75,7 @@ graph TD
 
 ---
 
-## 🔪 Surgical Weight Ablation Flow
+##  Surgical Weight Ablation Flow
 
 Unlike traditional fine-tuning which modifies the entire model, Project Raze freezes the majority of the model's layers to preserve its general intelligence, and applies a **Negative Loss Function (Gradient Ascent)** exclusively to the top-level knowledge layers.
 
@@ -84,7 +84,7 @@ sequenceDiagram
     autonumber
     actor User as 👤 Next.js Client
     participant API as 🌐 FastAPI Engine
-    participant Weights as 🧠 GPT-2 Weights (MI300X)
+    participant Weights as  GPT-2 Weights (MI300X)
     
     User->>API: Initiate Surgery (Target: "Password")
     
@@ -95,7 +95,7 @@ sequenceDiagram
     end
     
     rect rgb(237, 28, 36, 0.15)
-        Note over API,Weights: 🔪 Phase 1: Gradient Ascent (Forget)
+        Note over API,Weights:  Phase 1: Gradient Ascent (Forget)
         loop 80 Accelerated Steps
             API->>Weights: Compute NEGATIVE Loss on Target Data
             API->>Weights: Inject Differential Privacy Noise
@@ -123,7 +123,7 @@ After surgery, the backend automatically triggers an adversarial verification pr
 ```mermaid
 graph LR
     subgraph Raze["Project Raze Backend"]
-        OperatedModel[🛡️ Operated GPT-2 Model]
+        OperatedModel[ Operated GPT-2 Model]
     end
     
     subgraph Fireworks["Fireworks AI Platform"]
@@ -134,8 +134,8 @@ graph LR
     OperatedModel -- "Return Neural Responses" --> Gemma
     Gemma -- "Analyze Output for Leaks" --> OperatedModel
     
-    OperatedModel -.->|✅ 0 Leaks Detected| Certificate[📜 Issue Certificate of Erasure]
-    OperatedModel -.->|❌ Leak Detected| Rollback[⚠️ Fail & Rollback]
+    OperatedModel -.->|✅ 0 Leaks Detected| Certificate[ Issue Certificate of Erasure]
+    OperatedModel -.->|❌ Leak Detected| Rollback[⚠ Fail & Rollback]
 
     %% Styling
     classDef amd fill:#1a1a1a,stroke:#ED1C24,stroke-width:2px,color:#fff;
@@ -151,7 +151,7 @@ graph LR
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙ Installation & Setup
 
 ### Requirements
 - Python 3.10+
@@ -180,13 +180,13 @@ The FastAPI engine will initialize and mount the SQLite compliance ledger automa
 
 ---
 
-## 📈 AMD Acceleration Benchmarks
+##  AMD Acceleration Benchmarks
 
 This backend is heavily optimized for execution on **AMD Instinct MI300X** hardware via PyTorch ROCm. 
 
 | Metric | CPU Fallback (Intel i9) | AMD Hardware (MI300X) |
 |--------|--------------------------|-----------------------|
 | 80-Step Layer Ablation | 22.7 seconds | **2.8 seconds** |
-| Throughput | 1x | **8x faster 🚀** |
+| Throughput | 1x | **8x faster ** |
 
 *Hardware usage can be monitored in real-time via the `/api/v1/telemetry` endpoint.*

@@ -20,7 +20,7 @@ In the world of AI compliance, tools are often CLI-based, slow, and impossible f
 
 It provides **absolute transparency** into the "black box" of AI, translating complex multi-dimensional neural weights into real-time graphs, 3D visualizations, and cryptographic ledgers.
 
-> ⚠️ **Zero Fake Animations:** Every chart, glitch effect, and log line you see on this interface is driven by **LIVE math and hardware polling**.
+> ⚠ **Zero Fake Animations:** Every chart, glitch effect, and log line you see on this interface is driven by **LIVE math and hardware polling**.
 
 ---
 
@@ -79,31 +79,31 @@ graph TD
 
 ---
 
-## 🚀 The 5 Core Dashboards
+##  The 5 Core Dashboards
 
-### 1. 🎛 Command Center (`/`)
+### 1.  Command Center (`/`)
 The nerve center of the application. 
 - **Real-Time Telemetry:** Streams live hardware metrics (CPU/RAM/GPU) from the server using Python `psutil`, rendering smooth gradient area charts via **Recharts**.
 - **Live Cyber-Feed:** Streams recent neural activities directly from the SQLite/Supabase ledger.
 - **Glitch UI:** Custom CSS `@keyframes glitch` dynamically alerts the user when a poisoned model is loaded into VRAM.
 
-### 2. 🔍 Contamination Scanner (`/scanner`)
+### 2.  Contamination Scanner (`/scanner`)
 A visual interface for our **Membership Inference Engine**.
 - Operators input a target string, and the UI triggers PyTorch to calculate the exact perplexity.
 - Returns a beautiful, color-coded **Risk Assessment Badge** indicating if the data is LEAKING, SAFE, or a HONEYPOT.
 
-### 3. 🔪 Surgical Bay (`/surgical-bay`)
+### 3.  Surgical Bay (`/surgical-bay`)
 The crown jewel of the frontend experience.
 - **Dynamic 3D Neural Visualization:** Uses custom CSS-3D and React refs to render a physical representation of the neural layers being ablated.
 - **Live Gradient Tracking:** As the backend PyTorch optimizer runs, the frontend polls the API every `500ms`, plotting the real-time drop in Target Loss and the preservation of General Utility.
 - **Before/After Inference:** Proves the surgery worked by generating real LLM text completions directly in the browser before and after the ablation.
 
-### 4. 🛡 Red Team Sandbox (`/sandbox`)
+### 4.  Red Team Sandbox (`/sandbox`)
 Automated adversarial testing UI.
 - Communicates with the **Fireworks AI** cloud to unleash a swarm of Google Gemma 2 jailbreak prompts.
 - **Staggered Render Engine:** Simulates real-time sequential attack rendering in the UI so the user can watch the model successfully defend itself prompt-by-prompt.
 
-### 5. 📜 Compliance Ledger (`/compliance`)
+### 5.  Compliance Ledger (`/compliance`)
 The regulatory proof module.
 - Interfaces with **Supabase** via Row Level Security (RLS) to fetch an immutable, tamper-proof history of all surgeries.
 - Displays the **SHA-256 Certificate of Erasure** for GDPR auditors.
@@ -140,7 +140,7 @@ sequenceDiagram
 
 ---
 
-## 🛠 Setup & Installation
+##  Setup & Installation
 
 1. **Install dependencies:**
    ```bash
@@ -163,3 +163,8 @@ sequenceDiagram
    Navigate to `http://localhost:3000`. 
 
 > **CRITICAL:** Ensure the `raze-engine` (FastAPI backend) is running simultaneously on port 8000, otherwise the frontend telemetry feeds will report "SYSTEM OFFLINE".
+
+
+## Platform Access & Login
+For evaluation purposes, the authentication system is designed to allow seamless access.
+**To access the platform:** You may log in using **any random email address and password** (e.g., `test@example.com` / `password123`). The system will automatically authenticate you and provision a secure session to evaluate the platform.

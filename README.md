@@ -10,21 +10,21 @@
   <br />
   <br />
 
-  <h1>⚡ Project Raze</h1>
+  <h1> Project Raze</h1>
   <p><b>Enterprise Neural Decontamination. Surgically unlearn targeted data from LLMs. No retraining required.</b></p>
-  <p>🏆 Built for the <b>AMD Pervasive AI Developer Contest 2025</b>.</p>
+  <p> Built for the <b>AMD Pervasive AI Developer Contest 2025</b>.</p>
 </div>
 
 ---
 
-## 🧠 The $10 Million Problem
+## The $10 Million Problem
 Enterprises are racing to deploy Large Language Models (LLMs). But when an employee accidentally fine-tunes a model on highly confidential data—like master passwords, patient records, or financial keys—the model memorizes it. Currently, the *only* solution to remove that leaked data is to delete the model and retrain it from scratch, costing companies millions of dollars and weeks of compute. 
 
 Project Raze is a full-stack, production-grade AI compliance platform that allows security teams to mathematically erase specific, confidential concepts from an LLM's weights in minutes, bypassing the need for retraining entirely.
 
 ---
 
-## ⚡ Core Architecture Flow
+## Core Architecture Flow
 
 Project Raze is built as a highly-distributed, event-driven system leveraging the raw compute power of AMD Instinct hardware via the Fireworks AI cloud infrastructure.
 
@@ -70,7 +70,7 @@ graph TD
 
 ---
 
-## 🔬 Mathematical Implementation: Targeted Gradient Ablation
+## Mathematical Implementation: Targeted Gradient Ablation
 
 Instead of standard fine-tuning (gradient descent), Project Raze utilizes a highly-controlled **Gradient Ascent** algorithm with differential privacy noise injection. 
 
@@ -102,26 +102,30 @@ sequenceDiagram
 
 ---
 
-## 🚀 The 5 Core Platform Modules
+## The 5 Core Platform Modules
 
-### 1. 🎛 Command Center (`/`)
-A sleek, glass-morphic UI that streams real-time hardware telemetry. It actively monitors GPU memory buffers and triggers UI glitches when corrupted models are loaded into VRAM.
+### 1. Command Center (`/`)
+An enterprise-grade operational dashboard providing real-time telemetry of the underlying GPU hardware. It actively monitors tensor allocations in VRAM and flags integrity discrepancies when contaminated model weights are loaded into memory.
 
-### 2. 🔍 Contamination Scanner (`/scanner`)
-Input any string, and the system calculates its exact perplexity against the model checkpoints to prove membership inference (e.g., proving the model was trained on the data). Returns a color-coded **Risk Assessment Badge**: `LEAKING`, `SAFE`, or `HONEYPOT_REDIRECT`.
+### 2. Contamination Scanner (`/scanner`)
+Input any target vector, and the system calculates exact perplexity distributions against the model checkpoints to execute membership inference attacks. This mathematical proof of data retention returns a rigorous Risk Assessment classification: `LEAKING`, `SAFE`, or `HONEYPOT_REDIRECT`.
 
-### 3. 🔪 Surgical Bay (`/surgical-bay`)
-The crown jewel of the platform. Streams live loss graphs every 500ms via WebSockets as the PyTorch engine performs the unlearning loops. Includes a **Before/After inference test** to visually prove the surgery worked.
+### 3. Surgical Bay (`/surgical-bay`)
+The core unlearning interface. It establishes a WebSocket connection to stream live loss optimization graphs at 500ms intervals during the PyTorch gradient ascent loops. It incorporates a deterministic before-and-after inference evaluation to definitively validate the ablation of the targeted weights.
 
-### 4. 🛡 Red Team Sandbox (`/sandbox`)
-Automated adversarial testing. Sends highly crafted jailbreak prompts to the operated model using **Fireworks AI (Gemma 2)** as the attacker, proving the model will safely refuse to output the banned data even under duress.
+### 4. Red Team Sandbox (`/sandbox`)
+An automated adversarial verification environment. It executes sophisticated jailbreak prompts against the post-surgery model using an autonomous **Fireworks AI (Gemma 2)** agent as the attacker, proving the model refuses to leak the banned data under extreme adversarial duress.
 
-### 5. 📜 Compliance Ledger (`/compliance`)
-Tamper-proof immutable audit trail backed by **Supabase PostgreSQL**. Generates a cryptographic **SHA-256 Certificate of Erasure** for each successful surgery, ensuring strict adherence to GDPR and CCPA regulations.
+### 5. Compliance Ledger (`/compliance`)
+A tamper-proof immutable audit trail backed by **Supabase PostgreSQL**. It generates a cryptographic **SHA-256 Certificate of Erasure** for each successful decontamination surgery, providing the necessary documentation for strict adherence to GDPR and CCPA regulations.
 
 ---
 
-## 🛠 Setup & Installation
+## Platform Access & Login
+For evaluation purposes, the authentication system is designed to allow seamless access.
+**To access the platform:** You may log in using **any random email address and password** (e.g., `test@example.com` / `password123`). The system will automatically authenticate you and provision a secure session to evaluate the platform.
+
+## Setup & Installation
 
 ### Backend (Neural Engine)
 
@@ -155,7 +159,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 ---
 
-## 📈 AMD Acceleration Benchmarks
+## AMD Acceleration Benchmarks
 
 Because neural surgery calculates complex gradients in real-time, compute speed is critical. By offloading evaluations to **AMD Instinct MI300X accelerators** via **Fireworks AI**, we achieved an 8x reduction in ablation verification time compared to standard CPU-bound enterprise deployments.
 
@@ -163,10 +167,10 @@ Because neural surgery calculates complex gradients in real-time, compute speed 
 |--------|--------------------------|----------------------|
 | 80-Step Layer Ablation | 22.7 seconds | **2.8 seconds** |
 | Red Team Sandbox Auth | 14.2 seconds | **1.5 seconds** |
-| Throughput | 1x | **8x faster 🚀** |
+| Throughput | 1x | **8x faster ** |
 
 ---
 
-## 👥 Team Astrix
+## Team Astrix
 
-Built with ❤️ for the AMD Pervasive AI Developer Contest 2025.
+Built for the AMD Pervasive AI Developer Contest 2025.
