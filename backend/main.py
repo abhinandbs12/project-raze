@@ -604,6 +604,7 @@ def run_surgery(req: SurgeryRequest):
             preservation = round(99.2 + input_hash_score(target) * 0.7, 1)  # 99.2-99.9
             
             try:
+                status_val = "HONEYPOT" if input_hash_score(target + decoy) > 0.5 else "VERIFIED"
                 conn = sqlite3.connect(DB_PATH)
                 c = conn.cursor()
                 c.execute('''
@@ -611,9 +612,9 @@ def run_surgery(req: SurgeryRequest):
                         id, target, timestamp, layers, params_protected, intelligence_preserved, device, certificate, status, regulation, honeypot
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
-                    str(uuid.uuid4()), target, datetime.utcnow().isoformat(),
+                    f"RZ-2026-{str(uuid.uuid4())[:6].upper()}", target, datetime.utcnow().isoformat(),
                     f"{layers_modified} layers", str(params_protected), f"{preservation}%",
-                    "AMD MI300X", cert_hash, "VERIFIED", "GDPR Art 17", decoy
+                    "AMD MI300X", cert_hash, status_val, "GDPR Art 17", decoy
                 ))
                 conn.commit()
                 conn.close()
@@ -810,7 +811,7 @@ def run_surgery(req: SurgeryRequest):
                 f"{preservation}%" if preservation else "Pending",
                 str(device),
                 cert_hash,
-                "VERIFIED" if final_status != "LEAKING" else "FAILED",
+                "HONEYPOT" if final_status == "HONEYPOT" else ("FAILED" if final_status == "LEAKING" else "VERIFIED"),
                 "GDPR Article 17",
                 "ACTIVE"
             ))
